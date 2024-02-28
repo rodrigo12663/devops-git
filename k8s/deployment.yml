@@ -16,7 +16,7 @@ spec:
       containers:
       - name: devops-node
         imagePullPolicy: Always
-        image: rodrigov722/gitops-dev:v1
+        image: x-image
         # envFrom:
         #   - configMapRef: 
         #       name: node-kube-config
