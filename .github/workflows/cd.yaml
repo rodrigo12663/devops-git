@@ -38,7 +38,7 @@ jobs:
       - name: Push image
         uses: ad-m/github-push-action@master
         with:
-          github_token: ${secrets.GITTOKEN}
+          github_token: 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
           repository: rodrigo12663/devops-git
 
         
