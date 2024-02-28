@@ -1,0 +1,225 @@
+<script>
+      $(document).ready(function () {
+            var cpf = $("#cpf");
+            cpf.mask('000.000.000-00', { reverse: true });
+			
+			var options =  {
+			  onKeyPress: function(telefone, e, field, options) {
+				var masks = ['00 000000000', '000 000 000 000'];
+				var mask = (telefone.length > 11) ? masks[1] : masks[0];
+				$('#telefone').mask(mask, options);
+			}};
+
+            var telefone = $("#telefone");
+            telefone.mask('00 000000000', options);
+	  });
+      function yesnoCheck() {
+            if (document.getElementById('adv').checked) {
+                  document.getElementById('advArea').style.display = 'flex';
+            }
+            else document.getElementById('advArea').style.display = 'none';
+
+
+            if (document.getElementById('car').checked) {
+                  document.getElementById('carArea').style.display = 'flex';
+            }
+            else document.getElementById('carArea').style.display = 'none';
+      }
+      function validate() {
+            const p1 = document.getElementsByName("p1")[0].value
+            const p2 = document.getElementsByName("p2")[0].value
+            if (p1 !== p2) {
+                  swal({
+                        title: "Erro!",
+                        text: "As senhas devem ser iguais",
+                        icon: "error",
+                        button: "OK",
+                  });
+                  return false
+            } else {
+                  return true
+            }
+
+      }
+	  function chamarbutton(){
+	  
+	    var divs = document.querySelectorAll("#erro");
+		
+		console.log(divs)
+		
+		
+		divs.forEach(query => {
+				query.style.display = 'none';
+		});
+		
+	  }
+</script>
+
+
+
+
+<form action="/" method="POST" novalidate>
+
+       <div style="display: flex; align-items: center; width: 100%; justify-content: center;">
+                  <h4>Formulário de Cadastro para Usuários Externos</h4>
+      </div>            
+            
+      Tipo de usuário<br>
+      <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="tipo" onclick="javascript:yesnoCheck();"
+                  id="adv" value="adv" <% if (locals.usuario) { if(usuario.tipo ==='adv'){ %>   checked="checked" <% }} %> >
+            <label class="form-check-label" for="inlineRadio1"> Advogado</label>
+      </div>
+      <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="tipo" onclick="javascript:yesnoCheck();"
+                  id="car" value="car" <% if (locals.usuario) { if(usuario.tipo === 'car'){ %>   checked="checked" <% }} %>>
+            <label class="form-check-label" for="inlineRadio2">Cartório</label>
+      </div>
+      <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="tipo" onclick="javascript:yesnoCheck();"
+                  id="out" value="out" <% if (locals.usuario) { if(usuario.tipo === 'out'){ %>   checked="checked" <% }} %>>
+            <label class="form-check-label" for="inlineRadio3">Outros usuários</label>
+      </div>
+      <div class="form-row">
+            <div class="col">
+                  <label for="nome">Nome</label>
+                  <input type="text" class="form-control" id="nome" name="nome"
+                        value="<% if (locals.usuario) { %> <%= usuario.nome %> <% } %>" placeholder=""
+                        required>
+            </div>
+			<div class="col">
+				<label for="sobrenome">Sobrenome</label>
+				<input type="text" class="form-control" name="sobrenome" id="sobrenome" placeholder=""
+				value="<% if (locals.usuario) { %> <%= usuario.sobrenome %> <% } %>" required>
+			</div>
+            <div class="col">
+                  <label for="telefone">Telefone</label>
+                  <input type="text" class="form-control" name="telefone" id="telefone" placeholder=""
+                        value="<% if (locals.usuario) { %> <%= usuario.telefone %> <% } %>">
+            </div>
+			
+      </div>
+
+      <div class="form-row">
+            <div class="col">
+                  <label for="email">Email</label>
+                  <input type="email" class="form-control" name="email" placeholder=""
+                        value="<% if (locals.usuario) { %> <%= usuario.email %> <% } %>" required>
+            </div>
+            <div class="col">
+                  <label for="cpf">CPF</label>
+                  <input type="text" class="form-control" name="cpf" id="cpf" placeholder=""
+                        value="<% if (locals.usuario) { %> <%= usuario.cpf %> <% } %>" required>
+            </div>
+      </div>
+      <div id="advArea" class="form-row"    <% if (!locals.usuario) { %>style="display: none;" <%} %> <% if (locals.usuario) { if(!usuario.tipo){ %>   style="display: none;" <% }} %> <% if (locals.usuario) { if(usuario.tipo ==='car'){ %>   style="display: none;" <% }} %> <% if (locals.usuario) { if(usuario.tipo ==='out'){ %>   style="display: none;" <% }} %> <% if (locals.usuario) { if(usuario.tipo ==='adv'){ %>   style="display: flex;" <% }} %>>
+            <div class="col" style="padding-right: 10px;" >
+                  <label for="oab">OAB</label>
+                  <input type="email" class="form-control" name="oab"
+                        value="<% if (locals.usuario) { %> <%= usuario.oab %> <% } %>" placeholder="">
+            </div>
+            <div class="col">
+                  <label for="uf">UF</label>
+                  <select class="form-control" name="uf" value="<% if (locals.usuario) { %> <%= usuario.uf %> <% } %>"
+                        id="uf">
+                        <option value="">Selecione</option>
+                        <option value="AC">Acre</option>
+                        <option value="AL">Alagoas</option>
+                        <option value="AP">Amapá</option>
+                        <option value="AM">Amazonas</option>
+                        <option value="BA">Bahia</option>
+                        <option value="CE">Ceará</option>
+                        <option value="DF">Distrito Federal</option>
+                        <option value="ES">Espírito Santo</option>
+                        <option value="GO">Goiás</option>
+                        <option value="MA">Maranhão</option>
+                        <option value="MT">Mato Grosso</option>
+                        <option value="MS">Mato Grosso do Sul</option>
+                        <option value="MG">Minas Gerais</option>
+                        <option value="PA">Pará</option>
+                        <option value="PB">Paraíba</option>
+                        <option value="PR">Paraná</option>
+                        <option value="PE">Pernambuco</option>
+                        <option value="PI">Piauí</option>
+                        <option value="RJ">Rio de Janeiro</option>
+                        <option value="RN">Rio Grande do Norte</option>
+                        <option value="RS">Rio Grande do Sul</option>
+                        <option value="RO">Rondônia</option>
+                        <option value="RR">Roraima</option>
+                        <option value="SC">Santa Catarina</option>
+                        <option value="SP">São Paulo</option>
+                        <option value="SE">Sergipe</option>
+                        <option value="TO">Tocantins</option>
+                  </select>
+            </div>
+      </div>
+
+      <div id="carArea" class="form-row"    <% if (!locals.usuario) { %>style="display: none;" <%} %> <% if (locals.usuario) { if(!usuario.tipo){ %>   style="display: none;" <% }} %> <% if (locals.usuario) { if(usuario.tipo ==='adv'){ %>   style="display: none;" <% }} %>  <% if (locals.usuario) { if(usuario.tipo ==='out'){ %>   style="display: none;" <% }} %> <% if (locals.usuario) { if(usuario.tipo ==='car'){ %>   style="display: flex;" <% }} %>>
+            <div class="col" style="padding-right: 10px;" >
+                  <label for="cns">CNS</label>
+                  <input type="text" class="form-control" name="cns"
+                        value="<% if (locals.usuario) { %> <%= usuario.cns %> <% } %>" placeholder="">
+            </div>
+            <div class="col">
+                  <label for="uf">UF</label>
+                  <select class="form-control" name="uf" value="<% if (locals.usuario) { %> <%= usuario.uf %> <% } %>"
+                        id="uf">
+                        <option value="">Selecione</option>
+                        <option value="AC">Acre</option>
+                        <option value="AL">Alagoas</option>
+                        <option value="AP">Amapá</option>
+                        <option value="AM">Amazonas</option>
+                        <option value="BA">Bahia</option>
+                        <option value="CE">Ceará</option>
+                        <option value="DF">Distrito Federal</option>
+                        <option value="ES">Espírito Santo</option>
+                        <option value="GO">Goiás</option>
+                        <option value="MA">Maranhão</option>
+                        <option value="MT">Mato Grosso</option>
+                        <option value="MS">Mato Grosso do Sul</option>
+                        <option value="MG">Minas Gerais</option>
+                        <option value="PA">Pará</option>
+                        <option value="PB">Paraíba</option>
+                        <option value="PR">Paraná</option>
+                        <option value="PE">Pernambuco</option>
+                        <option value="PI">Piauí</option>
+                        <option value="RJ">Rio de Janeiro</option>
+                        <option value="RN">Rio Grande do Norte</option>
+                        <option value="RS">Rio Grande do Sul</option>
+                        <option value="RO">Rondônia</option>
+                        <option value="RR">Roraima</option>
+                        <option value="SC">Santa Catarina</option>
+                        <option value="SP">São Paulo</option>
+                        <option value="SE">Sergipe</option>
+                        <option value="TO">Tocantins</option>
+                  </select>
+            </div>
+      </div>
+
+      <div class="form-row">
+            <div class="col">
+                  <label for="p1">Senha</label>
+                  <input type="password" class="form-control" name="p1" placeholder="" required>
+            </div>
+            <div class="col">
+                  <label for="p2">Confirmação de senha</label>
+                  <input type="password" class="form-control" name="p2" placeholder="" required>
+            </div>
+      </div>
+      <br />
+
+	  <div class="text-center">
+		<button type="submit" class="btn btn-primary" onclick="return validate()">Cadastrar</button>
+		<button onclick="chamarbutton()" type="button" class="btn btn-secondary">Limpar validação</button>
+	  </div>
+</form>
+<% if (locals.errors) { %>
+
+<% Object.values(errors).forEach(function(error){ %>
+<div id="erro" class="alert alert-danger" role="alert">
+      <p><%= error.msg %></p>
+</div>
+
+<% }); %>
+
+<% } %>
