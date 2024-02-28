@@ -5,4 +5,4 @@ resources:
 images:
 - name: x-image
   newName: rodrigov722/gitops-dev
-  newTag: 8e3636e4d52b44a9b8bcd0be767796a51a272d16
+  newTag: 16ebbd21314d9ac055c8afa313a49452ac490b30
