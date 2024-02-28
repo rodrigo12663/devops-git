@@ -1,9 +1,7 @@
 name: GITOPS
-
 on:
   push:
     branches: [main]
-
 jobs:
   build:
     name: build
@@ -11,7 +9,6 @@ jobs:
     steps:
       - name: checkout code
         uses: actions/checkout@v2
-      
       - name: Build-image
         uses: docker/build-push-action@v1.1.0
         with:
@@ -19,6 +16,32 @@ jobs:
           password: ${{secrets.DOCKER_PASSWORD}}
           repository: ${{secrets.DOCKER_USERNAME}}/gitops-dev
           tags: ${{github.sha}}, latest
+      
+      - name: Install Kustomize
+        uses: multani/action-setup-kustomize@v1
+        with:
+          version: 4.5.4
+
+      - name: update Kubernetes Kustomize
+        env:
+          DOCKER_USERNAME: ${{secrets.DOCKER_USERNAME}}
+        run: |
+          cd k8s
+          kustomize edit set image x-image=$DOCKER_USERNAME/gitops-dev:${{github.sha}}
+
+      - name: Commit
+        run: |
+          git config --local user.email = "action@github.com"
+          git config --local user.name = "Github Action"
+          git commit -am "Change docker version image"
+      
+      - name: Push image
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${secrets.GITHUB_TOKEN}
+          repository: rodrigo12663/devops-git
+
+        
 
 
     

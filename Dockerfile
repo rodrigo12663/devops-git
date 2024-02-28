@@ -4,4 +4,6 @@ WORKDIR /app
 
 COPY ./node-devops .
 
+RUN echo "Server Running"
+
 CMD ["node","index.js"]
